@@ -1,14 +1,23 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import csv
+import time
 
 def scrape_fpl_data(team_id, gameweek, driver):
     url = f"https://fantasy.premierleague.com/entry/{team_id}/event/{gameweek}"
     driver.get(url)
+    time.sleep(2)  # Adding a small delay to ensure page load
+
+    # Check if cookie acceptance popup is present
+    accept_button = driver.find_elements(By.ID, 'onetrust-accept-btn-handler')
+    if accept_button:
+        accept_button[0].click()  # Click "Accept All Cookies" button
+
     try:
         # Wait for the points element to load
-        points_element = driver.find_element_by_css_selector("div.EntryEvent__PrimaryValue-l17rqm-4.fryVza")
+        points_element = driver.find_element(By.CSS_SELECTOR, "div.EntryEvent__PrimaryValue-l17rqm-4.fryVza")
         points = points_element.text
         return points
     except Exception as e:
@@ -39,6 +48,5 @@ if __name__ == "__main__":
     team_ids = [2654272]  # Add more team ids as needed
     gameweeks = range(1, 39)  # Range from 1 to 38 for all gameweeks
     main(team_ids, gameweeks)
-
 
 
