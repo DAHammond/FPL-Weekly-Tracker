@@ -42,6 +42,14 @@ def scrape_fpl_data(team_id, gameweek, driver):
     driver.get(url)
 
     try:
+        # Check for cookie acceptance button
+        cookie_button = driver.find_elements(By.ID, 'onetrust-accept-btn-handler')
+        if cookie_button:
+            cookie_button[0].click()  # Click "Accept All Cookies" button
+            time.sleep(2)  # Adding a delay after accepting cookies
+        
+        time.sleep(1)  # You can adjust the delay time as needed
+        
         # Scrape points
         points_element = driver.find_element(By.CSS_SELECTOR, "div.EntryEvent__PrimaryValue-l17rqm-4.fryVza")
         points = points_element.text
@@ -49,12 +57,18 @@ def scrape_fpl_data(team_id, gameweek, driver):
     except Exception as e:
         print(f"Error while scraping points data for Team ID {team_id}, Gameweek {gameweek}: {e}")
         return None
-
+    
 def scrape_owner_and_team_name(team_id, driver):
     url = f"https://fantasy.premierleague.com/entry/{team_id}/event/1"
     driver.get(url)
 
     try:
+        # Check for cookie acceptance button
+        cookie_button = driver.find_elements(By.ID, 'onetrust-accept-btn-handler')
+        if cookie_button:
+            cookie_button[0].click()  # Click "Accept All Cookies" button
+            time.sleep(2)  # Adding a delay after accepting cookies
+        
         # Scrape owner name
         owner_name_element = driver.find_element(By.XPATH, "//div[@class='Entry__EntryName-sc-1kf863-0 cMEsev']")
         owner_name = owner_name_element.text
@@ -81,6 +95,9 @@ def main(team_ids, gameweeks):
         # Iterate through team ids
         for team_id in team_ids:
             owner_name, team_name = scrape_owner_and_team_name(team_id, driver)
+            if owner_name is None or team_name is None:
+                print(f"Skipping Team ID {team_id} due to missing owner name or team name")
+                continue
             row_data = [team_id, owner_name, team_name]
             # Iterate through gameweeks
             for gameweek in gameweeks:
@@ -92,7 +109,8 @@ def main(team_ids, gameweeks):
         driver.quit()
 
 if __name__ == "__main__":
-    league_id = 1927352  # Enter the league id here
-    gameweeks = range(1, 3)  # Range from 1 to 38 for all gameweeks
+    league_id = 2154330  ###################### Enter the league id here ###########################################
+    gameweeks = range(1, 39)  # Range from 1 to 38 for all gameweeks
     team_ids = scrape_team_ids(league_id)
     main(team_ids, gameweeks)
+
