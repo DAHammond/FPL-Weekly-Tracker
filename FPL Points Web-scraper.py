@@ -1,9 +1,7 @@
 import csv
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
@@ -25,9 +23,8 @@ def main(team_ids, gameweeks):
         # Write header row
         csv_writer.writerow(['Team ID'] + [f'Gameweek {gw}' for gw in gameweeks])
         # Set up Selenium with ChromeDriverManager
-        options = Options()
-        options.headless = True  # Optional: run Chrome in headless mode
-        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        driver.maximize_window()
         # Iterate through team ids
         for team_id in team_ids:
             row_data = [team_id]
@@ -43,3 +40,5 @@ if __name__ == "__main__":
     team_ids = [2654272]  # Add more team ids as needed
     gameweeks = range(1, 39)  # Range from 1 to 38 for all gameweeks
     main(team_ids, gameweeks)
+
+
