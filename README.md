@@ -1,6 +1,7 @@
 # FPL-Weekly-Tracker
 This project aims to create a robust and transferable web-scraping and graph creation combination to be able to show the relative progress of each individual's Fantasy Premier League (FPL) Team throughout the season.   
 This repository contains the output from one specific league with outputs showing the same league
+*Please note, these graphs do not auto-update. To get new graphs with new game weeks, the web-scraping script and graph creation script need to be re-run*  
 
 ## Files in this repository
 * README
