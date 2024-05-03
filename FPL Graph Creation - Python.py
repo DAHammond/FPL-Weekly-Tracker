@@ -176,32 +176,34 @@ for gw in gameweeks:
 # In[42]:
 
 
-num_teams = len(cumulative_totals_df2.columns) - 3  # Exclude the first three columns
+# Calculate the number of teams
+num_teams = len(player_names)
 
-# Define a color palette
-colors = sns.color_palette('tab20', num_teams)
+# Define a list of colors using a colormap
+colors = plt.cm.tab20.colors
 
-# Create the plot
+# Selecting columns for plotting, excluding the first three columns and the last 'num_teams' columns
+teams_to_plot = cumulative_totals_df2.columns[-num_teams:]
+
+# Plot each team's points with a different color
 plt.figure(figsize=(12, 6))
-
-# Selecting columns for plotting
-teams_to_plot = cumulative_totals_df2.columns[num_teams:]
-
-# Plot each team's points
 for i, team in enumerate(teams_to_plot):
-    plt.plot(cumulative_totals_df2.index, cumulative_totals_df2[team], label=team, color=colors[i])
+    color = colors[i % len(colors)]  # Cycle through colors if there are more teams than colors
+    plt.plot(cumulative_totals_df2.index, cumulative_totals_df2[team], label=team, color=color)
 
-# Adding labels and title
-plt.xlabel('Gameweeks', fontweight='bold')
-plt.ylabel('Points behind the leader', fontweight='bold')
-plt.title('Number of Points Behind The Leader in Each Gameweek (Top Scorer at 0)', fontweight='bold')
-
-# Show plot
+# Add labels, title, legend, etc.
+plt.xlabel('Gameweeks')
+plt.ylabel('Points')
+plt.title('Points of Teams Across Gameweeks')
 plt.xticks(rotation=45)
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('Weekly Points Behind Leader.jpg')
+
+# Save the plot
+plt.savefig('Weekly Points Behind Leader.jpg')  # Adjust the subfolder and filename as needed
 plt.close()
+
+
 
 
