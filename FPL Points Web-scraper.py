@@ -8,12 +8,6 @@ import time
 def scrape_fpl_data(team_id, gameweek, driver):
     url = f"https://fantasy.premierleague.com/entry/{team_id}/event/{gameweek}"
     driver.get(url)
-    time.sleep(2)  # Adding a small delay to ensure page load
-
-    # Check if cookie acceptance popup is present
-    accept_button = driver.find_elements(By.ID, 'onetrust-accept-btn-handler')
-    if accept_button:
-        accept_button[0].click()  # Click "Accept All Cookies" button
 
     try:
         # Scrape points
@@ -24,33 +18,29 @@ def scrape_fpl_data(team_id, gameweek, driver):
         print(f"Error while scraping points data for Team ID {team_id}, Gameweek {gameweek}: {e}")
         return None
 
-def scrape_owner_name(team_id, driver):
-    url = f"https://fantasy.premierleague.com/entry/{team_id}"
+def scrape_owner_and_team_name(team_id, driver):
+    url = f"https://fantasy.premierleague.com/entry/{team_id}/event/1"
     driver.get(url)
-    time.sleep(2)  # Adding a small delay to ensure page load
 
     try:
+        # Wait for cookie acceptance button to appear
+        cookie_button = driver.find_elements(By.ID, 'onetrust-accept-btn-handler')
+        if cookie_button:
+            cookie_button[0].click()  # Click "Accept All Cookies" button
+            time.sleep(2)  # Adding a delay after accepting cookies
+
         # Scrape owner name
-        owner_name_element = driver.find_element(By.CSS_SELECTOR, "div.Entry__EntryName-sc-1kf863-0.cMEsev")
+        owner_name_element = driver.find_element(By.XPATH, "//div[@class='Entry__EntryName-sc-1kf863-0 cMEsev']")
         owner_name = owner_name_element.text
-        return owner_name
-    except Exception as e:
-        print(f"Error while scraping owner name for Team ID {team_id}: {e}")
-        return None
-
-def scrape_team_name(team_id, driver):
-    url = f"https://fantasy.premierleague.com/entry/{team_id}"
-    driver.get(url)
-    time.sleep(2)  # Adding a small delay to ensure page load
-
-    try:
+        
         # Scrape team name
-        team_name_element = driver.find_element(By.CSS_SELECTOR, "div.Entry__TeamName-sc-1kf863-1.inZJya")
+        team_name_element = driver.find_element(By.XPATH, "//div[@class='Entry__TeamName-sc-1kf863-1 inZJya']")
         team_name = team_name_element.text
-        return team_name
+        
+        return owner_name, team_name
     except Exception as e:
-        print(f"Error while scraping team name for Team ID {team_id}: {e}")
-        return None
+        print(f"Error while scraping owner name and team name for Team ID {team_id}: {e}")
+        return None, None
 
 def main(team_ids, gameweeks):
     # Initialize CSV writer
@@ -63,8 +53,7 @@ def main(team_ids, gameweeks):
         driver = webdriver.Chrome(service=service)
         # Iterate through team ids
         for team_id in team_ids:
-            owner_name = scrape_owner_name(team_id, driver)
-            team_name = scrape_team_name(team_id, driver)
+            owner_name, team_name = scrape_owner_and_team_name(team_id, driver)
             row_data = [team_id, owner_name, team_name]
             # Iterate through gameweeks
             for gameweek in gameweeks:
@@ -78,6 +67,12 @@ if __name__ == "__main__":
     team_ids = [2654272]  # Add more team ids as needed
     gameweeks = range(1, 39)  # Range from 1 to 38 for all gameweeks
     main(team_ids, gameweeks)
+
+
+
+
+
+
 
 
 
