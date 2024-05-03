@@ -7,7 +7,7 @@ This project aims to create a robust and transferable web-scraping and graph cre
 * FPL Points Web-scraper FROM A LEAGUE.py - the web-scraping code to get points from each individual team within a given league. This code can be used for any league by looking for the number string in the url bar when viewing the league on FPL online. This id will need to be placed as the league_id at the end of the .py file
 * FPL_weekly_tracker.csv - the output file from running either of the web-scraping files
 
-## To use for different teams/leagues
+## Replication --> How to use for different teams/leagues
 ### For the individual team id route
 1. Visit the FPL website and select the points view for the team you would like to scrape
 2. Look into the URL bar to get the 7 character string (/entry/000000/event)
