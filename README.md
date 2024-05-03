@@ -15,7 +15,7 @@ This project aims to create a robust and transferable web-scraping and graph cre
 4. Run the code to get the output file
 5. Run the Juptyr notebook to get the graphs 
 
-### For the individual team id route
+### For the league route
 1. Visit the FPL website and select the league you would like to scrape
 2. Look into the URL bar to get the 7 character string (/leagues/000000/standings)
 3. Replace the league_id with your 7 character string at the end of the appropriate .py file
