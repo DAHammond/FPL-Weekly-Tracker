@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 def scrape_fpl_data(team_id, gameweek, driver):
     url = f"https://fantasy.premierleague.com/entry/{team_id}/event/{gameweek}"
@@ -23,10 +24,10 @@ def main(team_ids, gameweeks):
         csv_writer = csv.writer(csvfile)
         # Write header row
         csv_writer.writerow(['Team ID'] + [f'Gameweek {gw}' for gw in gameweeks])
-        # Set up Selenium
-        service = Service('path_to_chromedriver')
-        service.start()
-        driver = webdriver.Remote(service.service_url)
+        # Set up Selenium with ChromeDriverManager
+        options = Options()
+        options.headless = True  # Optional: run Chrome in headless mode
+        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         # Iterate through team ids
         for team_id in team_ids:
             row_data = [team_id]
