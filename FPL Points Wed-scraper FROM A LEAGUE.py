@@ -109,7 +109,7 @@ def main(team_ids, gameweeks):
         driver.quit()
 
 if __name__ == "__main__":
-    league_id = 2154330  ###################### Enter the league id here ###########################################
+    league_id = 1927352  ###################### Enter the league id here ###########################################
     gameweeks = range(1, 39)  # Range from 1 to 38 for all gameweeks
     team_ids = scrape_team_ids(league_id)
     main(team_ids, gameweeks)

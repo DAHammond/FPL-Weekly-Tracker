@@ -64,7 +64,7 @@ def main(team_ids, gameweeks):
         driver.quit()
 
 if __name__ == "__main__":
-    team_ids = [2654272]  # Add more team ids as needed
+    team_ids = [2654272]  ###################### Enter the team id's here ###########################################
     gameweeks = range(1, 39)  # Range from 1 to 38 for all gameweeks
     main(team_ids, gameweeks)
 
